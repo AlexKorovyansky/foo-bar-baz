@@ -1,5 +1,6 @@
 var rainman = require('./rainman');
 var util = require('util');
+var PokerEvaluator = require("poker-evaluator");
 
 RANK_SCORES = {
   "2": 1,
@@ -50,7 +51,16 @@ function _estimateHand(hole_cards) {
 }
 
 function _estimateAllCards(cards) {
-  return rainman.rank(cards);
+  var cardsProcessed = cards.map(function(card) {
+    var cardName = card.rank == "10" ? "T" : card.rank;
+    var cardType = card.suit[0];
+    return cardName + cardType;
+  });
+  var returnValue = PokerEvaluator.evalHand(cardsProcessed).value / 36874;
+  if(returnValue > 1)
+    returnValue = 1;
+  return returnValue;
+  //return rainman.rank(cards);
 }
 
 function _estimateState(game_state) {
