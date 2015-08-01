@@ -8,6 +8,11 @@ module.exports = {
     console.log(game_state);
     try {
 
+      if(Math.random() > 0.5) {
+        console.info("Math.random() > 0.5");
+        return 60;
+      }
+
       var inPlayers = game_state.players.filter(function(player) {
         return player.status != "out";
       });
