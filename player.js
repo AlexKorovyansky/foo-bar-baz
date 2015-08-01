@@ -96,7 +96,8 @@ module.exports = {
     }
     lastGameId = game_state.game_id;
 
-    console.log(util.inspect(game_state, { showHidden: false, depth: null }));
+    console.log(game_state);
+    //console.log(util.inspect(game_state, { showHidden: false, depth: null }));
 
     try {
       var inPlayers = game_state.players.filter(function(player) {
