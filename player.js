@@ -77,11 +77,9 @@ function _estimateState(game_state) {
       var allCards = hand.concat(communityCards);
       var allCardsEstimation = _estimateAllCards(allCards);
 
-      if(communityCards.length == 4) {
-        var communityCardsEstimation = _estimateAllCards(communityCards);
-        if (communityCardsEstimation == allCardsEstimation)
-          return 0;
-      }
+      var communityCardsEstimation = _estimateAllCards(communityCards);
+      if (communityCardsEstimation == allCardsEstimation)
+        return 0;
 
       return allCardsEstimation;
     }
@@ -115,7 +113,7 @@ var bluff = null;
 var lastGameId = "";
 module.exports = {
 
-  VERSION: "LeanNodeJS fox",
+  VERSION: "LeanNodeJS fox 15:41",
 
   bet_request: function(game_state) {
     if(game_state.game_id != lastGameId) {
