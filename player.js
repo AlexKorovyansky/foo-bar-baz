@@ -1,5 +1,25 @@
 var rainman = require('./rainman');
 
+RANK_SCORES = {
+  "2": 1,
+  "3": 2,
+  "4": 3,
+  "5": 4,
+  "6": 5,
+  "7": 6,
+  "8": 7,
+  "9": 8,
+  "10": 9,
+  "J": 10,
+  "Q": 11,
+  "K": 12,
+  "A": 13
+};
+
+function rankScore(rank1, rank2) {
+  return RANK_SCORES[rank1] * RANK_SCORES[rank1] + RANK_SCORES[rank2] * RANK_SCORES[rank2];
+}
+
 /**
  * Return from 0.0 to 1.0
  * 0.0 - very bad hand
@@ -18,8 +38,14 @@ function _estimateHand(hole_cards) {
   } else if (first.suit === second.suit) {
     return 0.75
   } else {
-    return 0.5;
+    if (rankScore(first.rank, second.rank) > 190) {
+      return 0.5;
+    } else {
+      return 0;
+    }
   }
+  
+  return 0;
 }
 
 function _estimateAllCards(cards) {
