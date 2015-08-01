@@ -85,12 +85,19 @@ function _call(game_state) {
   return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
 }
 
+var lastGameId = "";
 module.exports = {
 
   VERSION: "LeanNodeJS fox",
 
   bet_request: function(game_state) {
-    console.log(game_state);
+    if(game_state.game_id != lastGameId) {
+      console.log("New game");
+    }
+    lastGameId = game_state.game_id;
+
+    console.log(util.inspect(game_state, { showHidden: false, depth: null }));
+
     try {
       var inPlayers = game_state.players.filter(function(player) {
         return player.status != "out";
