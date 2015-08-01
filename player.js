@@ -38,7 +38,9 @@ function _estimateHand(hole_cards) {
   var second = hole_cards[1];
   if (first.rank === second.rank) {
     return 1;
-  } else if (first.suit === second.suit) {
+  } else if (first.suit === second.suit
+      || first.rank >= 12 || second.rank >= 12  // A, K
+      || Math.abs(second.rank - first.rank) == 1) { // continuous
     return 0.75
   } else {
     return rankScore(first.rank, second.rank) / MAX_SCORE;
@@ -122,16 +124,16 @@ module.exports = {
         return _call(game_state);
       }
       else if(stateEstimation >= 0.75 && stateEstimation < 0.95) {
-        if(game_state.current_buy_in > 250)
-          return _raise(game_state);
+        if(game_state.current_buy_in > currentPlayer.stack / 3)
+          return _call(game_state);
         else
-          return 250;
+          return currentPlayer.stack / 3;
       }
       else if(stateEstimation >= 0.95) {
-        if(game_state.current_buy_in > 500)
-          return _raise(game_state);
+        if(game_state.current_buy_in > currentPlayer.stack / 2)
+          return _call(game_state);
         else
-          return 500;
+          return currentPlayer.stack / 2;
       }
 
       console.info("Default behaviour");
