@@ -39,12 +39,15 @@ function _estimateHand(hole_cards) {
   var second = hole_cards[1];
   if (first.rank === second.rank) {
     return 1;
-  } else if (first.suit === second.suit
+  } else if (first.rank >= 13 || second.rank >= 13) {
+    return 0.9;
+  }else if (first.suit === second.suit
       || first.rank >= 12 || second.rank >= 12  // A, K
       || Math.abs(second.rank - first.rank) == 1) { // continuous
     return 0.75
   } else {
-    return rankScore(first.rank, second.rank) / MAX_SCORE;
+    //return rankScore(first.rank, second.rank) / MAX_SCORE;
+    return 0;
   }
   
   return 0;
@@ -93,10 +96,33 @@ function _estimateState(game_state) {
   }
 }
 
+function _soft_raise(game_state) {
+  var stack = game_state.players[game_state.in_action].stack;
+  
+  var raiseAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"] + game_state.minimum_raise;
+  if (raiseAmount > stack / 2) {
+    raiseAmount = 0;
+  }
+  console.info("RAISE: " + raiseAmount);
+  return raiseAmount;
+}
+
 function _raise(game_state) {
   var raiseAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"] + game_state.minimum_raise;
   console.info("RAISE: " + raiseAmount);
   return raiseAmount;
+}
+
+function _soft_call(game_state) {
+  var stack = game_state.players[game_state.in_action].stack;
+  var callAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
+  
+  if (callAmount > stack / 4) {
+    callAmount = 0;
+  }
+  
+  console.info("CALL: " + callAmount);
+  return callAmount;
 }
 
 function _call(game_state) {
@@ -147,10 +173,11 @@ module.exports = {
         if (stateEstimation < 0.5) {
           return 0;
         }
-        else if (stateEstimation < 0.75) {
-          return _call(game_state);
+        else if (stateEstimation < 0.85) {
+          //return _soft_call(game_state);
+          return 0;
         }
-        else if (stateEstimation >= 0.75 && stateEstimation < 0.95) {
+        else if (stateEstimation >= 0.85 && stateEstimation < 0.95) {
           if (game_state.current_buy_in > currentPlayer.stack / 3)
             return _call(game_state);
           else
