@@ -176,12 +176,12 @@ module.exports = {
 
       if(countOfCards == 2) {
         // 2 cards
-        if (inPlayers.length > 2 && (game_state.current_buy_in >= (currentPlayer.stack / 10))) {
-          if (stateEstimation > 0.5)
-            return _raise(game_state);
-          else
-            return 0;
-        }
+        //if (inPlayers.length > 2 && (game_state.current_buy_in >= (currentPlayer.stack / 10))) {
+        //  if (stateEstimation > 0.5)
+        //    return _raise(game_state);
+        //  else
+        //    return 0;
+        //}
 
         if (stateEstimation > 0.95) {
           if (game_state.current_buy_in > currentPlayer.stack / 2)
