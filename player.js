@@ -23,7 +23,7 @@ function _estimateHand(hole_cards) {
 }
 
 function _estimateAllCards(cards) {
-  return 0.5;
+  return rainman(cards);
 }
 
 function _estimateState(game_state) {
@@ -35,6 +35,12 @@ function _estimateState(game_state) {
   } else {
     // With community cards
     // TODO
+    /*var hand = game_state.players[game_state.in_action].hole_cards;
+    var communityCards = game_state.community_cards;
+    var allCards = hand.concat(communityCards);
+    var allCardsEstimation = _estimateAllCards(allCards);
+    console.log("rainman", allCardsEstimation);*/
+
     var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
     return handEstimation;
   }
@@ -56,8 +62,10 @@ module.exports = {
       });
 
       var stateEstimation = _estimateState(game_state);
-      if(stateEstimation == 0)
+      if(stateEstimation < 0.5
+          && (stateEstimation / 0.5) < Math.random()) {
         return 0;
+      }
 
       if(stateEstimation == 1) {
         if(game_state.current_buy_in > 500)
