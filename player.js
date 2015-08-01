@@ -38,10 +38,9 @@ function rankScore(rank1, rank2) {
 function _estimateHand(hole_cards) {
   var first = hole_cards[0];
   var second = hole_cards[1];
-  if (first.rank === second.rank) {
+  if (first.rank === second.rank && RANK_SCORES[first.rank] > 6) {
     return 1;
-  } else if (RANK_SCORES[first.rank] >= 13 || RANK_SCORES[second.rank] >= 13
-            || Math.abs(RANK_SCORES[second.rank] - RANK_SCORES[first.rank]) == 1) {
+  } else if (RANK_SCORES[first.rank] >= 13 || RANK_SCORES[second.rank] >= 13) {
     return 0.9;
   } else if (first.suit === second.suit
       || RANK_SCORES[first.rank] == 12 || RANK_SCORES[second.rank] == 12) { // continuous
