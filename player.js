@@ -59,8 +59,12 @@ module.exports = {
       if(stateEstimation == 0)
         return 0;
 
-      if(stateEstimation == 1)
-        return 500;
+      if(stateEstimation == 1) {
+        if(game_state.current_buy_in > 500)
+          return _raise(game_state);
+        else
+          return 500;
+      }
 
       /*if(game_state.current_buy_in >= 1000 && inPlayers.length <= 2) {
         console.info("game_state.current_buy_in >= 1000 && inPlayers.length <= 2");
