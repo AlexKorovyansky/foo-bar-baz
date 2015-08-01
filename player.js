@@ -103,10 +103,16 @@ module.exports = {
         return 0;
       }
       else if(stateEstimation == 1) {
-        if(game_state.current_buy_in > 500)
+        if(game_state.current_buy_in > 250)
           return _raise(game_state);
         else
           return 500;
+      }
+      else if(stateEstimation >= 0.75) {
+        if(game_state.current_buy_in > 250)
+          return _raise(game_state);
+        else
+          return 250;
       }
 
       /*if(game_state.current_buy_in >= 1000 && inPlayers.length <= 2) {
