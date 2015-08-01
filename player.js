@@ -50,7 +50,7 @@ function _estimateHand(hole_cards) {
 }
 
 function _estimateAllCards(cards) {
-  return rainman(cards);
+  return rainman.rank(cards);
 }
 
 function _estimateState(game_state) {
@@ -62,15 +62,11 @@ function _estimateState(game_state) {
 
     } else {
       // With community cards
-      // TODO
-      /*var hand = game_state.players[game_state.in_action].hole_cards;
-       var communityCards = game_state.community_cards;
-       var allCards = hand.concat(communityCards);
-       var allCardsEstimation = _estimateAllCards(allCards);
-       console.log("rainman", allCardsEstimation);*/
-
-      var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
-      return handEstimation;
+      var hand = game_state.players[game_state.in_action].hole_cards;
+      var communityCards = game_state.community_cards;
+      var allCards = hand.concat(communityCards);
+      var allCardsEstimation = _estimateAllCards(allCards);
+      return allCardsEstimation;
     }
   }
   catch(e) {
@@ -86,6 +82,12 @@ function _raise(game_state) {
 
 function _call(game_state) {
   return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
+}
+
+function _countOfCards(game_state) {
+  var handCards = game_state.players[game_state.in_action].hole_cards.length;
+  var communityCards = game_state.community_cards ? game_state.community_cards.length : [];
+  return handCards.length + communityCards.length;
 }
 
 var lastGameId = "";
@@ -107,33 +109,48 @@ module.exports = {
         return player.status != "out";
       });
       var currentPlayer = game_state.players[game_state.in_action];
-
+      var countOfCards = _countOfCards(game_state);
       var stateEstimation = _estimateState(game_state);
 
-      if(inPlayers.length > 2 && (game_state.current_buy_in >= (currentPlayer.stack / 10))) {
-        if(stateEstimation > 0.5)
-          return _raise(game_state);
-        else
-          return 0;
-      }
+      if(countOfCards == 2) {
+        // 2 cards
+        if (inPlayers.length > 2 && (game_state.current_buy_in >= (currentPlayer.stack / 10))) {
+          if (stateEstimation > 0.5)
+            return _raise(game_state);
+          else
+            return 0;
+        }
 
-      if(stateEstimation < 0.5) {
-        return 0;
-      }
-      else if(stateEstimation < 0.75) {
-        return _call(game_state);
-      }
-      else if(stateEstimation >= 0.75 && stateEstimation < 0.95) {
-        if(game_state.current_buy_in > currentPlayer.stack / 3)
+        if (stateEstimation < 0.5) {
+          return 0;
+        }
+        else if (stateEstimation < 0.75) {
           return _call(game_state);
-        else
-          return currentPlayer.stack / 3;
+        }
+        else if (stateEstimation >= 0.75 && stateEstimation < 0.95) {
+          if (game_state.current_buy_in > currentPlayer.stack / 3)
+            return _call(game_state);
+          else
+            return currentPlayer.stack / 3;
+        }
+        else if (stateEstimation >= 0.95) {
+          if (game_state.current_buy_in > currentPlayer.stack / 2)
+            return _call(game_state);
+          else
+            return currentPlayer.stack / 2;
+        }
       }
-      else if(stateEstimation >= 0.95) {
-        if(game_state.current_buy_in > currentPlayer.stack / 2)
+      else {
+        // 5+ cards
+        if (stateEstimation == 0) {
+          return 0;
+        }
+        else if (stateEstimation > 0 && stateEstimation < 0.5) {
           return _call(game_state);
-        else
-          return currentPlayer.stack / 2;
+        }
+        else if (stateEstimation >= 0.5) {
+          return 10000000;
+        }
       }
 
       console.info("Default behaviour");
