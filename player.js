@@ -76,6 +76,10 @@ function _raise(game_state) {
   return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"] + game_state.minimum_raise;
 }
 
+function _call(game_state) {
+  return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
+}
+
 module.exports = {
 
   VERSION: "LeanNodeJS engineered player tuna",
@@ -88,12 +92,13 @@ module.exports = {
       });
 
       var stateEstimation = _estimateState(game_state);
+
+
       if(stateEstimation < 0.5
           && (stateEstimation / 0.5) < Math.random()) {
         return 0;
       }
-
-      if(stateEstimation == 1) {
+      else if(stateEstimation == 1) {
         if(game_state.current_buy_in > 500)
           return _raise(game_state);
         else
@@ -114,6 +119,10 @@ module.exports = {
           return _raise(game_state);
         else
           return 0;
+      }
+
+      if(stateEstimation < 0.75) {
+        return _call(game_state);
       }
 
       console.info("Default behaviour");
