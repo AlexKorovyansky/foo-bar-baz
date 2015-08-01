@@ -189,10 +189,10 @@ module.exports = {
           else
             return currentPlayer.stack / 2;
         } else if (stateEstimation > 0.85) {
-          if (game_state.current_buy_in > currentPlayer.stack / 3)
+          if (game_state.current_buy_in > currentPlayer.stack / 4)
             return _call(game_state);
           else
-            return currentPlayer.stack / 3;
+            return currentPlayer.stack / 4;
         } else {
           return 0
         }
