@@ -1,6 +1,7 @@
 var rainman = require('./rainman');
 var util = require('util');
 var PokerEvaluator = require("poker-evaluator");
+var ThreeCardConverter = require("./node_modules/poker-evaluator/lib/3CardConverter");
 
 RANK_SCORES = {
   "2": 1,
@@ -53,12 +54,16 @@ function _estimateHand(hole_cards) {
   return 0;
 }
 
-function _estimateAllCards(cards) {
+function _convertCardsToPokerEvaluator(cards) {
   var cardsProcessed = cards.map(function(card) {
     var cardName = card.rank == "10" ? "T" : card.rank;
     var cardType = card.suit[0];
     return cardName + cardType;
   });
+  return cardsProcessed;
+}
+
+function _estimateAllCards(cardsProcessed) {
   var returnValue = PokerEvaluator.evalHand(cardsProcessed).value / 36874;
   if(returnValue > 1)
     returnValue = 1;
@@ -78,13 +83,21 @@ function _estimateState(game_state) {
       var hand = game_state.players[game_state.in_action].hole_cards;
       var communityCards = game_state.community_cards;
       var allCards = hand.concat(communityCards);
-      var allCardsEstimation = _estimateAllCards(allCards);
+      var allCardsProcessed = _convertCardsToPokerEvaluator(allCards);
+      var allCardsEstimation = _estimateAllCards(allCardsProcessed);
 
-      if(communityCards.length != 4) {
-        var communityCardsEstimation = _estimateAllCards(communityCards);
-        if (communityCardsEstimation == allCardsEstimation)
-          return 0;
+      var communityCardsEstimation = 0;
+      if(communityCards.length == 4) {
+        // 4 cards
+        var cardsProcessed = ThreeCardConverter.fillHand(_convertCardsToPokerEvaluator(communityCards));
+        communityCardsEstimation = _estimateAllCards(cardsProcessed);
+      } else {
+        // 3,5 cards
+        var cardsProcessed = _convertCardsToPokerEvaluator(communityCards);
+        communityCardsEstimation = _estimateAllCards(cardsProcessed);
       }
+      if (communityCardsEstimation == allCardsEstimation)
+        return 0;
 
       return allCardsEstimation;
     }
