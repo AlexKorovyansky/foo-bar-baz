@@ -90,6 +90,7 @@ function _countOfCards(game_state) {
   return handCards.length + communityCards.length;
 }
 
+var bluff = null;
 var lastGameId = "";
 module.exports = {
 
@@ -143,6 +144,16 @@ module.exports = {
       else {
         // 5+ cards
         if (stateEstimation == 0) {
+          if(bluff == null && countOfCards == 5 && Math.random() < 0.314) {
+            console.log("bluffing set");
+            bluff = "yes";
+          } else {
+            bluff = "no";
+          }
+          if(bluff == "yes") {
+            console.log("bluffing");
+            return _call(game_state);
+          }
           return 0;
         }
         else if (stateEstimation > 0 && stateEstimation < 0.5) {
