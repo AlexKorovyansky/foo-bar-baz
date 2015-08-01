@@ -76,6 +76,12 @@ function _estimateState(game_state) {
       var communityCards = game_state.community_cards;
       var allCards = hand.concat(communityCards);
       var allCardsEstimation = _estimateAllCards(allCards);
+
+      var communityCardsEstimation = _estimateAllCards(communityCards);
+
+      if(communityCardsEstimation == allCardsEstimation)
+        return 0;
+
       return allCardsEstimation;
     }
   }
