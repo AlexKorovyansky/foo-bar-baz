@@ -103,6 +103,7 @@ module.exports = {
   bet_request: function(game_state) {
     if(game_state.game_id != lastGameId) {
       console.log("New game");
+      bluff = null;
     }
     lastGameId = game_state.game_id;
 
