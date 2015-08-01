@@ -76,7 +76,7 @@ module.exports = {
       }*/
 
       if(inPlayers.length > 2 && game_state.current_buy_in >= 1000) {
-        if(stateEstimation == 1)
+        if(stateEstimation > 0.5)
           return _raise(game_state);
         else
           return 0;
