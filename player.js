@@ -77,11 +77,15 @@ function _estimateState(game_state) {
 }
 
 function _raise(game_state) {
-  return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"] + game_state.minimum_raise;
+  var raiseAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"] + game_state.minimum_raise;
+  console.info("RAISE: " + raiseAmount);
+  return raiseAmount;
 }
 
 function _call(game_state) {
-  return game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
+  var callAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
+  console.info("CALL: " + raiseAmount);
+  return callAmount;
 }
 
 function _countOfCards(game_state) {
