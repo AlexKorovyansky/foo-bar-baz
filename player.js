@@ -4,23 +4,37 @@ var rainman = require('./rainman');
  * Return from 0.0 to 1.0
  * 0.0 - very bad hand
  * 1.0 = awesome hand
+ * @param {object} hole_cards
+ * @param {string} hole_cards.rank
+ * @param {string} hole_cards.suit
+ * @returns {number}
+ * @private
  */
 function _estimateHand(hole_cards) {
-  return 0.5;
-};
+  var first = hole_cards[0];
+  var second = hole_cards[1];
+  if (first.rank === second.rank) {
+    return 1;
+  } else if (first.suit === second.suit) {
+    return 0.75
+  } else {
+    return 0.5;
+  }
+}
 
 function _estimateAllCards(cards) {
   return 0.5;
 }
 
 function _estimateState(game_state) {
-
-  if(!community_cards.community_cards || community_cards.community_cards.length == 0) {
+  if(!game_state.community_cards || game_state.community_cards.length == 0) {
     // Without community cards
-    return 0.5;
+    var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
+    return handEstimation;
 
   } else {
     // With community cards
+    // TODO
     var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
     return handEstimation;
   }
