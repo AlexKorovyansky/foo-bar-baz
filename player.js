@@ -1,12 +1,32 @@
 var rainman = require('./rainman');
 
+function _estimateHand(hole_cards) {
+  return 1.0;
+};
+
+function _estimateState(game_state) {
+  var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
+  return handEstimation;
+};
+
 module.exports = {
 
   VERSION: "LeanNodeJS engineered player tuna",
 
+  /**
+   * Return from 0.0 to 1.0
+   * 0.0 - very bad hand
+   * 1.0 = awesome hand
+   */
+
+
   bet_request: function(game_state) {
     console.log(game_state);
     try {
+
+      var stateEstimation = _estimateState(game_state);
+      if(stateEstimation == 0)
+        return 0;
 
       var inPlayers = game_state.players.filter(function(player) {
         return player.status != "out";
