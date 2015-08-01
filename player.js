@@ -94,7 +94,7 @@ function _raise(game_state) {
 
 function _call(game_state) {
   var callAmount = game_state.current_buy_in - game_state.players[game_state.in_action]["bet"];
-  console.info("CALL: " + raiseAmount);
+  console.info("CALL: " + callAmount);
   return callAmount;
 }
 
