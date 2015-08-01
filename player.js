@@ -141,7 +141,7 @@ var bluff = null;
 var lastGameId = "";
 module.exports = {
 
-  VERSION: "LeanNodeJS fox 15:41",
+  VERSION: "LeanNodeJS tiger 16:36",
 
   bet_request: function(game_state) {
     if(game_state.game_id != lastGameId) {
@@ -170,24 +170,18 @@ module.exports = {
             return 0;
         }
 
-        if (stateEstimation < 0.5) {
-          return 0;
-        }
-        else if (stateEstimation < 0.85) {
-          //return _soft_call(game_state);
-          return 0;
-        }
-        else if (stateEstimation >= 0.85 && stateEstimation < 0.95) {
-          if (game_state.current_buy_in > currentPlayer.stack / 3)
-            return _call(game_state);
-          else
-            return currentPlayer.stack / 3;
-        }
-        else if (stateEstimation >= 0.95) {
+        if (stateEstimation > 0.95) {
           if (game_state.current_buy_in > currentPlayer.stack / 2)
             return _call(game_state);
           else
             return currentPlayer.stack / 2;
+        } else if (stateEstimation > 0.85) {
+          if (game_state.current_buy_in > currentPlayer.stack / 3)
+            return _call(game_state);
+          else
+            return currentPlayer.stack / 3;
+        } else {
+          return 0
         }
       }
       else {
