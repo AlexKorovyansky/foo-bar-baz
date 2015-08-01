@@ -16,6 +16,8 @@ RANK_SCORES = {
   "A": 13
 };
 
+MAX_SCORE = 338;
+
 function rankScore(rank1, rank2) {
   return RANK_SCORES[rank1] * RANK_SCORES[rank1] + RANK_SCORES[rank2] * RANK_SCORES[rank2];
 }
@@ -38,11 +40,7 @@ function _estimateHand(hole_cards) {
   } else if (first.suit === second.suit) {
     return 0.75
   } else {
-    if (rankScore(first.rank, second.rank) > 190) {
-      return 0.5;
-    } else {
-      return 0;
-    }
+    return rankScore(first.rank, second.rank) / MAX_SCORE;
   }
   
   return 0;
@@ -82,7 +80,7 @@ function _call(game_state) {
 
 module.exports = {
 
-  VERSION: "LeanNodeJS engineered player tuna",
+  VERSION: "LeanNodeJS fox",
 
   bet_request: function(game_state) {
     console.log(game_state);
