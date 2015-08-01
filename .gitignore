@@ -1,3 +1,5 @@
 express.pid
 .idea
 node_modules
+*.log
+*.real
