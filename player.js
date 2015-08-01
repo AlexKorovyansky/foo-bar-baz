@@ -51,22 +51,28 @@ function _estimateAllCards(cards) {
 }
 
 function _estimateState(game_state) {
-  if(!game_state.community_cards || game_state.community_cards.length == 0) {
-    // Without community cards
-    var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
-    return handEstimation;
+  try {
+    if (!game_state.community_cards || game_state.community_cards.length == 0) {
+      // Without community cards
+      var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
+      return handEstimation;
 
-  } else {
-    // With community cards
-    // TODO
-    /*var hand = game_state.players[game_state.in_action].hole_cards;
-    var communityCards = game_state.community_cards;
-    var allCards = hand.concat(communityCards);
-    var allCardsEstimation = _estimateAllCards(allCards);
-    console.log("rainman", allCardsEstimation);*/
+    } else {
+      // With community cards
+      // TODO
+      /*var hand = game_state.players[game_state.in_action].hole_cards;
+       var communityCards = game_state.community_cards;
+       var allCards = hand.concat(communityCards);
+       var allCardsEstimation = _estimateAllCards(allCards);
+       console.log("rainman", allCardsEstimation);*/
 
-    var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
-    return handEstimation;
+      var handEstimation = _estimateHand(game_state.players[game_state.in_action].hole_cards);
+      return handEstimation;
+    }
+  }
+  catch(e) {
+    console.error(e);
+    return 0.5;
   }
 }
 
