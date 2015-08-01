@@ -106,8 +106,8 @@ function _call(game_state) {
 }
 
 function _countOfCards(game_state) {
-  var handCards = game_state.players[game_state.in_action].hole_cards.length;
-  var communityCards = game_state.community_cards ? game_state.community_cards.length : [];
+  var handCards = game_state.players[game_state.in_action].hole_cards;
+  var communityCards = game_state.community_cards ? game_state.community_cards : [];
   return handCards.length + communityCards.length;
 }
 
