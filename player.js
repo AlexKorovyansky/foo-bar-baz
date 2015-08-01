@@ -77,11 +77,11 @@ function _estimateState(game_state) {
       var allCards = hand.concat(communityCards);
       var allCardsEstimation = _estimateAllCards(allCards);
 
-      /*if(communityCards.length == 4) {
+      if(communityCards.length == 4) {
         var communityCardsEstimation = _estimateAllCards(communityCards);
         if (communityCardsEstimation == allCardsEstimation)
           return 0;
-      }*/
+      }
 
       return allCardsEstimation;
     }
