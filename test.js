@@ -1,30 +1,64 @@
 var player = require('./player');
 player.bet_request({
-  "players": [{
-    "name": "Player 1",
-    "stack": 1000,
-    "status": "active",
-    "bet": 0,
-    "hole_cards": [],
-    "version": "Version name 1",
-    "id": 0
-  }, {
-    "name": "Player 2",
-    "stack": 1000,
-    "status": "active",
-    "bet": 0,
-    "hole_cards": [],
-    "version": "Version name 2",
-    "id": 1
-  }],
-  "tournament_id": "550d1d68cd7bd10003000003",
-  "game_id": "550da1cb2d909006e90004b1",
-  "round": 0,
-  "bet_index": 0,
-  "small_blind": 10,
-  "orbits": 0,
-  "dealer": 0,
-  "community_cards": [],
-  "current_buy_in": 0,
-  "pot": 0
+  tournament_id: '5592bba01c450b0003000003',
+  game_id: '55bc57aecc04560003000048',
+  round: 14,
+  players: [{
+    name: 'Awesome Incredible Poker Bot',
+    stack: 0,
+    status: 'out',
+    bet: 0,
+    version: 'Awesome Incredible Poker Bot',
+    id: 0
+  },
+    {
+      name: 'LeanNodeJS',
+      stack: 2235,
+      status: 'active',
+      bet: 30,
+      hole_cards: [Object],
+      version: 'LeanNodeJS engineered player',
+      id: 1
+    },
+    {
+      name: 'Boris',
+      stack: 0,
+      status: 'out',
+      bet: 0,
+      version: 'Boris Raiser v1.0',
+      id: 2
+    },
+    {
+      name: 'PythonPokerTeam',
+      stack: 1010,
+      status: 'active',
+      bet: 30,
+      version: 'Inky 0.1',
+      id: 3
+    },
+    {
+      name: 'sevenbits',
+      stack: 1625,
+      status: 'active',
+      bet: 70,
+      version: 'Crazy Bot',
+      id: 4
+    },
+    {
+      name: 'JBot',
+      stack: 0,
+      status: 'out',
+      bet: 0,
+      version: 'Default Java folding player',
+      id: 5
+    }],
+  small_blind: 10,
+  orbits: 2,
+  dealer: 1,
+  community_cards: [],
+  current_buy_in: 70,
+  pot: 130,
+  in_action: 1,
+  minimum_raise: 40,
+  bet_index: 10
 });
