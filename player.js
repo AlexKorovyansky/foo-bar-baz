@@ -95,45 +95,34 @@ module.exports = {
       var inPlayers = game_state.players.filter(function(player) {
         return player.status != "out";
       });
+      var currentPlayer = game_state.players[game_state.in_action];
 
       var stateEstimation = _estimateState(game_state);
 
-
-      if(stateEstimation < 0.5
-          && (stateEstimation / 0.5) < Math.random()) {
-        return 0;
-      }
-      else if(stateEstimation == 1) {
-        if(game_state.current_buy_in > 250)
-          return _raise(game_state);
-        else
-          return 500;
-      }
-      else if(stateEstimation >= 0.75) {
-        if(game_state.current_buy_in > 250)
-          return _raise(game_state);
-        else
-          return 250;
-      }
-
-      /*if(game_state.current_buy_in >= 1000 && inPlayers.length <= 2) {
-        console.info("game_state.current_buy_in >= 1000 && inPlayers.length <= 2");
-        if(Math.random() > 0.5 || stateEstimation == 1) {
-          return 1000000000;
-        } else {
-          return 0;
-        }
-      }*/
-
-      if(inPlayers.length > 2 && game_state.current_buy_in >= 1000) {
+      if(inPlayers.length > 2 && (game_state.current_buy_in >= (currentPlayer.stack / 10))) {
         if(stateEstimation > 0.5)
           return _raise(game_state);
         else
           return 0;
       }
 
-      if(stateEstimation < 0.75) {
+      if(stateEstimation < 0.5) {
+        return 0;
+      }
+      else if(stateEstimation < 0.75) {
         return _call(game_state);
+      }
+      else if(stateEstimation >= 0.75 && stateEstimation < 0.95) {
+        if(game_state.current_buy_in > 250)
+          return _raise(game_state);
+        else
+          return 250;
+      }
+      else if(stateEstimation >= 0.95) {
+        if(game_state.current_buy_in > 500)
+          return _raise(game_state);
+        else
+          return 500;
       }
 
       console.info("Default behaviour");
