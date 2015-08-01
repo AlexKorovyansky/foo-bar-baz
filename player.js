@@ -8,18 +8,17 @@ module.exports = {
     console.log(game_state);
     try {
 
-      if(Math.random() > 0.5) {
-        console.info("Math.random() > 0.5");
-        return 60;
-      }
-
       var inPlayers = game_state.players.filter(function(player) {
         return player.status != "out";
       });
 
       if(game_state.current_buy_in >= 1000 && inPlayers.length <= 2) {
         console.info("game_state.current_buy_in >= 1000 && inPlayers.length <= 2");
-        return 1000000000;
+        if(Math.random() > 0.5) {
+          return 1000000000;
+        } else {
+          return 0;
+        }
       }
 
       console.info("Default behaviour");
