@@ -71,7 +71,7 @@ function _estimateState(game_state) {
     }
   }
   catch(e) {
-    console.trace(e);
+    console.error(e.stack);
     console.error(e);
     return 0.5;
   }
@@ -140,7 +140,7 @@ module.exports = {
       return _raise(game_state);
     }
     catch(e) {
-      console.trace(e);
+      console.error(e.stack);
       console.error(e);
       return 0;
     }
